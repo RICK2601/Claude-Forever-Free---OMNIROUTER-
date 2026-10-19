@@ -1,0 +1,20 @@
+import pandas as pd
+
+# Load sales data
+sales = pd.read_csv("sales.csv")
+
+# Clean column names
+sales.columns = sales.columns.str.strip().str.lower()
+
+# Remove duplicate and empty rows
+sales_clean = sales.drop_duplicates().dropna(how="all")
+
+# Remove extra spaces from text columns
+for col in sales_clean.select_dtypes(include="object").columns:
+    sales_clean[col] = sales_clean[col].str.strip()
+
+# Save cleaned data
+sales_clean.to_csv("sales_clean.csv", index=False)
+
+print("Sales data cleaned successfully!")
+print(sales_clean.head())
